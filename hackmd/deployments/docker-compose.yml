@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  hackmd:
+    container_name: hackmd
+    image: hackmdio/hackmd:2.3.2
+    depends_on:
+      - hackmd_database
+    ports:
+      - 3000:3000
+    volumes:
+      - ../data/hackmd:/home/hackmd/app/public/uploads
+    environment:
+      - CMD_DB_URL=postgres://pguser:pgpassword@database/dbhackmd
+      - CMD_USECDN=false
+    restart: on-failure
+
+  hackmd_database:
+    container_name: hackmd_database
+    image: postgres:11.6-alpine
+    volumes:
+      - ../data/hackmd_database:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=pgpassword
+      - POSTGRES_DB=dbhackmd
+    restart: on-failure

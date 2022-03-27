@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  nginx-proxy-manager:
+    container_name: nginx-proxy-manager
+    image: jc21/nginx-proxy-manager:latest
+    depends_on:
+      - nginx-proxy-manager_database
+    ports:
+      - 80:80
+      - 81:81
+      - 443:443
+    volumes:
+      - ../data/nginx-proxy-manager:/data
+      - ../data/letsencrypt:/etc/letsencrypt
+    environment:
+      DB_MYSQL_HOST: nginx-proxy-manager_database
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: npm
+      DB_MYSQL_PASSWORD: npm
+      DB_MYSQL_NAME: npm
+    restart: on-failure
+
+  nginx-proxy-manager_database:
+    container_name: nginx-proxy-manager_database
+    image: jc21/mariadb-aria:10.4
+    volumes:
+      - ../data/nginx-proxy-manager_database:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 'npm'
+      MYSQL_DATABASE: 'npm'
+      MYSQL_USER: 'npm'
+      MYSQL_PASSWORD: 'npm'
+    restart: on-failure

@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  bitwarden:
+    container_name: bitwarden
+    image: bitwardenrs/server:latest
+    ports:
+      - 80:80
+    volumes:
+      - ../data/bitwarden:/data
+    restart: on-failure
+
+  bitwarden_backup:
+    container_name: bitwarden_backup
+    image: bruceforce/bw_backup:latest
+    depends_on:
+      - bitwarden
+    volumes:
+      - ../data/bitwarden:/data
+      - ../data/bitwarden_backup:/backup_folder/
+    environment:
+      - UID=0
+      - GID=0
+      - CRON_TIME=0 5 * * *
+      - DB_FILE=/data/db.sqlite3
+      - BACKUP_FILE=/data/db_backup/backup.sqlite3
+      - TIMESTAMP=false
+    restart: on-failure

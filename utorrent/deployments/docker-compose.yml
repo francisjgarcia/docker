@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  utorrent:
+    container_name: utorrent
+    image: ekho/utorrent:ubuntu-20.04
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    volumes:
+      - ../data/utorrent/settings:/utorrent/settings
+      - ../data/utorrent/downloads/data:/data
+    environment:
+      UID: 1000
+      GID: 1000
+      webui: ng
+      dir_autoload_delete: 'true'
+      dir_download: /data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "4"
+    restart: on-failure

@@ -1,0 +1,17 @@
+---
+version: '3.8'
+services:
+  pxe:
+    container_name: pxe
+    image: linuxserver/netbootxyz:latest
+    ports:
+      - 80:80
+      - 69:69/udp
+      - 3000:3000
+    volumes:
+      - ../data/pxe/config:/config
+      - ../data/pxe/assets:/assets
+    environment:
+      - PUID=0
+      - PGID=0
+    restart: on-failure

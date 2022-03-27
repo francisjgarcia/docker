@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  jira:
+    container_name: jira
+    image: atlassian/jira-software:latest
+    ports:
+      - 80:80
+    environment:
+      - ATL_PROXY_NAME=jira.internal
+      - ATL_PROXY_PORT=80
+      - ATL_TOMCAT_SCHEME=http
+    restart: on-failure

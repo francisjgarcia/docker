@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+    home-assistant:
+      container_name: home-assistant
+      image: homeassistant/home-assistant:latest
+      network_mode: host
+      volumes:
+        - ../data/home-assistant:/config
+      restart: on-failure

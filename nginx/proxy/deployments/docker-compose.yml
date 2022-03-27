@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  nginx-proxy:
+    container_name: nginx-proxy
+    image: jwilder/nginx-proxy:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ../data/nginx-proxy/conf.d:/etc/nginx/conf.d
+      - ../data/nginx-proxy/html:/usr/share/nginx/html
+      - vhostd:/etc/nginx/vhost.d
+      - certs:/etc/nginx/certs:ro
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+    restart: on-failure
+
+volumes:
+    certs:
+    vhostd:

@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  sonarr:
+    container_name: sonarr
+    image: linuxserver/sonarr:latest
+    ports:
+      - 8989:8989
+    volumes:
+      - ../data/sonarr/config:/config
+      - ../data/sonarr/tvs:/tv
+      - ../data/sonarr/downloads:/downloads
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+      - UMASK_SET=022
+    restart: on-failure

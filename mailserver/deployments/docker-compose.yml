@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  mailserver:
+    container_name: mailserver
+    hostname: mailserver
+    domainname: francisjgarcia.es
+    image: tvial/docker-mailserver:latest
+    ports:
+      - 25:25
+      - 143:143
+      - 587:587
+      - 993:993
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    volumes:
+      - maildata:/var/mail
+      - mailstate:/var/mail-state
+      - maillogs:/var/log/mail
+      - ../data/mailserver:/tmp/docker-mailserver
+    environment:
+      - ENABLE_SPAMASSASSIN=1
+      - SPAMASSASSIN_SPAM_TO_INBOX=1
+      - ENABLE_CLAMAV=1
+      - ENABLE_FAIL2BAN=1
+      - ENABLE_POSTGREY=1
+      - ONE_DIR=1
+      - DMS_DEBUG=0
+    restart: on-failure
+
+volumes:
+  maildata:
+  mailstate:
+  maillogs:
